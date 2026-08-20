@@ -100,4 +100,7 @@ Planejamento de varejo é gestão de exceções. Cards compactos, filtros persis
 ## Limites
 
 Prazo de fornecedor, nível de serviço, lote mínimo, restrições de pedido, venda perdida e custo de carregamento não existem. As reposições são cenários e exigem confirmação operacional.
+# Interação principal: Simulador de Reposição
+
+Defina prazo de entrega, dias de estoque de segurança e cenário de demanda. As unidades recomendadas usam a mesma fila de risco filtrada exibida abaixo. Revise estoque negativo, estoque-alvo, reposição e status antes de agir; custos e condições ausentes continuam declarados como limitação.
 

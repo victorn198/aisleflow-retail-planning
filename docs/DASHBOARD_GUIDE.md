@@ -110,4 +110,7 @@ Retail planning is an exception-management workflow. The interface uses compact 
 ## What the dashboard does not claim
 
 Supplier lead time, service level, minimum order, purchase-order constraints, lost sales, and carrying cost are absent. Replenishment values are scenarios, forecast performance is historical, and no recommendation should be executed without operational confirmation.
+# Signature interaction: Replenishment Simulator
+
+Set lead time, safety-stock days, and a demand scenario. The recommended units use the same filtered risk queue shown below. Review negative stock, target stock, reorder quantity, and risk status before acting; missing supplier economics remain a declared limitation.
 

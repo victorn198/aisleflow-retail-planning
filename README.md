@@ -53,3 +53,6 @@ Validate with `python -m pipeline validate`, `pytest`, `npm test`, `npm run buil
 Production implementation would connect ERP sales, inventory snapshots, supplier lead times, service levels, and purchasing constraints. [Discuss a similar project](mailto:comercial@wickoai.com.br).
 
 See [Portuguese documentation](README.pt-BR.md), [complete dashboard guide](docs/DASHBOARD_GUIDE.md), [metric catalog](docs/METRIC_CATALOG.md), and [demo guide](docs/DEMO_GUIDE.md).
+# Design innovation
+
+The **Replenishment Simulator** converts filtered demand and stock signals into an editable scenario. Lead time, safety-stock days, and demand variation change the recommendation immediately; the result is explicitly a planning scenario, not an automated purchase order.
