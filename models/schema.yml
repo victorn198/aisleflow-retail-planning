@@ -1,0 +1,15 @@
+version: 2
+models:
+  - name: mart_inventory_risk
+    description: Replenishment scenario at store and product grain.
+    columns:
+      - name: store
+        tests: [not_null]
+      - name: product_id
+        tests: [not_null]
+      - name: reorder_qty
+        tests: [not_null]
+      - name: risk_status
+        tests:
+          - accepted_values:
+              values: ['Out of stock', 'Critical', 'Low stock', 'Excess', 'Healthy']
