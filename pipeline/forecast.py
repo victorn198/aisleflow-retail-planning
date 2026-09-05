@@ -38,6 +38,17 @@ def rolling_backtest(values: list[float], minimum_history: int = 56) -> dict[str
     def rmse(predictions: list[float]) -> float:
         return sqrt(sum((observed - predicted) ** 2 for observed, predicted in zip(actual, predictions, strict=True)) / len(actual))
 
+    def diagnostics(predictions: list[float]) -> dict[str, float]:
+        errors = [predicted - observed for observed, predicted in zip(actual, predictions, strict=True)]
+        absolute_errors = [abs(error) for error in errors]
+        denominator = sum(abs(observed) for observed in actual)
+        return {
+            'rmse': rmse(predictions),
+            'mae': sum(absolute_errors) / len(absolute_errors),
+            'bias': sum(errors) / len(errors),
+            'wape': sum(absolute_errors) / denominator if denominator else 0,
+        }
+
     baseline_rmse = rmse(baseline)
     candidate_rmse = rmse(candidate)
     improvement = (baseline_rmse - candidate_rmse) / baseline_rmse if baseline_rmse else 0
@@ -46,8 +57,8 @@ def rolling_backtest(values: list[float], minimum_history: int = 56) -> dict[str
         'split': 'rolling_origin',
         'minimum_history_days': minimum_history,
         'holdout_observations': len(actual),
-        'baseline': {'name': 'moving_average_28d', 'rmse': baseline_rmse},
-        'candidate': {'name': 'linear_trend_28d', 'rmse': candidate_rmse},
+        'baseline': {'name': 'moving_average_28d', **diagnostics(baseline)},
+        'candidate': {'name': 'linear_trend_28d', **diagnostics(candidate)},
         'candidate_improvement': improvement,
         'selected_model': winner,
     }

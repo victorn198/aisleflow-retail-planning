@@ -1,5 +1,7 @@
 # AisleFlow Retail Planning
 
+**[Abrir demo ao vivo](https://aisleflow-retail-planning.pages.dev/)** · [Read in English](README.md)
+
 ## Documentação
 
 - [Guia completo do dashboard](docs/DASHBOARD_GUIDE.pt-BR.md)
@@ -25,6 +27,18 @@ Quantidade em estoque não mostra sozinha onde capital de giro ou nível de serv
 
 A recomendação usa cobertura de 14 dias como cenário. Não é pedido de compra porque a fonte não contém prazo de fornecedor, pedido mínimo ou meta de serviço.
 
+## Laboratório operacional
+
+Todas as páginas usam cinco lentes complementares, sem repetir os números dos cards. A página de comando cobre:
+
+- **Prioridade** organiza a fila por severidade e necessidade de reposição.
+- **Cobertura** compara estoque visível com estoque-alvo e quantifica o déficit.
+- **Drivers** atribui a mudança contra a janela anterior às divisões.
+- **Variabilidade** mede estabilidade da demanda pelo coeficiente de variação.
+- **Cenário** aplica uma sensibilidade transparente de demanda para 12 dias; não é pedido de compra nem previsão.
+
+Os laboratórios secundários são específicos: acurácia, viés, variabilidade, cobertura e sensibilidade da previsão; severidade e gaps de estoque; contribuição e rebalanceamento da rede; premissas de reposição; e completude, integridade, reconciliação e prontidão dos dados.
+
 ## Execução
 
 ```powershell
@@ -36,7 +50,7 @@ python -m pipeline build
 npm run dev
 ```
 
-O case demonstra modelagem de granularidades, baseline de previsão, priorização operacional, interface bilíngue e governança de premissas. [Contato](mailto:comercial@wickoai.com.br).
-# Inovação de design
+O case demonstra modelagem de granularidades, baseline de previsão, priorização operacional, interface bilíngue e governança de premissas. [Contato](mailto:victorn198@outlook.com).
+## Inovação de design
 
 O **Simulador de Reposição** transforma demanda e estoque filtrados em um cenário editável. Prazo de entrega, dias de segurança e variação da demanda alteram a recomendação imediatamente; o resultado é explicitamente um cenário de planejamento, não uma ordem de compra automática.

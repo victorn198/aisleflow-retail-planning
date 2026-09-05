@@ -4,11 +4,17 @@
   "holdout_observations": 270,
   "baseline": {
     "name": "moving_average_28d",
-    "rmse": 280.01456625977397
+    "rmse": 280.01456625977397,
+    "mae": 177.9448412698412,
+    "bias": 4.706216931216922,
+    "wape": 0.47325289489718503
   },
   "candidate": {
     "name": "linear_trend_28d",
-    "rmse": 280.83728885299104
+    "rmse": 280.83728885299104,
+    "mae": 185.53403880070556,
+    "bias": 7.795767195767195,
+    "wape": 0.4934367320671635
   },
   "candidate_improvement": -0.002938142126698554,
   "selected_model": "moving_average_28d"
