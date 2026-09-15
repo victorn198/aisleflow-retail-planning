@@ -7,7 +7,7 @@ test('renders, recalculates period, switches language, and fits mobile', async (
   await expect(page.locator('.brand')).toContainText('AisleFlow')
   await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000})
   const before=await page.locator('.metric-card strong').first().innerText()
-  await page.locator('select').first().selectOption('7')
+  await page.locator('.period-options').getByRole('button', { name: '7 days' }).click()
   await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000})
   await expect.poll(()=>page.locator('.metric-card strong').first().innerText()).not.toBe(before)
   await page.getByRole('button',{name:'PT'}).click()
@@ -16,7 +16,7 @@ test('renders, recalculates period, switches language, and fits mobile', async (
 })
 
 test('shows full history and snapshot metrics honestly',async({page})=>{
-  test.setTimeout(120000);await page.goto('/');await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000});await page.locator('select').first().selectOption('all');await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000});await expect(page.locator('.metric-card .delta.neutral').first()).toContainText('no prior window');await expect(page.locator('.metric-card').last()).toContainText('current snapshot')
+  test.setTimeout(120000);await page.goto('/');await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000});await page.locator('.period-options').getByRole('button',{name:'History'}).click();await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000});await expect(page.locator('.metric-card .delta.neutral').first()).toContainText('no prior window');await expect(page.locator('.metric-card').last()).toContainText('current snapshot')
 })
 
 test('operations lab exposes five distinct inventory lenses',async({page})=>{
