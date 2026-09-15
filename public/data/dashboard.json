@@ -3,10 +3,10 @@
     "source": "Mendeley Data · CC BY 4.0",
     "period": "2025-06-01 — 2026-04-24",
     "builtAt": "2026-08-19",
-    "rows": 410506,
+    "rows": 123928,
     "limitations": {
-      "en": "Reorder outputs are scenarios because supplier lead times and service-level targets are not present in the source.",
-      "pt": "As reposições são cenários porque prazos de fornecedores e metas de nível de serviço não existem na fonte."
+      "en": "Reorder outputs are scenarios because supplier lead times and service-level targets are not present. Negative sales may be returns or adjustments and must be classified before operational use.",
+      "pt": "As reposições são cenários porque prazos de fornecedores e metas de nível de serviço não existem. Vendas negativas podem ser devoluções ou ajustes e precisam ser classificadas antes do uso operacional."
     }
   },
   "filters": {

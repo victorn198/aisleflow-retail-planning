@@ -2,7 +2,7 @@ import type { BreakdownRow, SeriesPoint } from './types'
 
 export type FilterState={channel:string;device:string;country:string;period:'7'|'30'|'90'|'all'}
 export type DrillItem={dimension:'division'|'store'|'channel'|'product_id';value:string}
-export type MartResult={current:Record<string,number>;previous:Record<string,number>;trend:SeriesPoint[];breakdown:BreakdownRow[];detail:Record<string,string|number>[];context:{topDriver:string;topShare:number;avgDaily:number;stock:number;dimension:string;canDrill:boolean;signal:'sales'|'units'|'rows'}}
+export type MartResult={current:Record<string,number>;previous:Record<string,number>;trend:SeriesPoint[];breakdown:BreakdownRow[];detail:Record<string,string|number>[];context:{topDriver:string;topShare:number;avgDaily:number;stock:number;dimension:string;canDrill:boolean;signal:'sales'|'units'|'rows';comparisonAvailable:boolean;currentStart:string;currentEnd:string}}
 
 let connectionPromise:Promise<import('@duckdb/duckdb-wasm').AsyncDuckDBConnection>|undefined
 const literal=(value:string)=>`'${value.replaceAll("'","''")}'`
@@ -34,7 +34,7 @@ async function runQuery(filters:FilterState,pageId:string,drillPath:DrillItem[])
  const clauses=[filters.channel&&`division=${literal(filters.channel)}`,filters.device&&`store=${literal(filters.device)}`,filters.country&&`channel=${literal(filters.country)}`,...drillPath.map(item=>`${item.dimension}=${literal(item.value)}`)].filter(Boolean)
  const where=clauses.length?`where ${clauses.join(' and ')}`:''
  const days=filters.period==='all'?0:Number(filters.period)
- const range=`with base as(select * from read_parquet('sales.parquet') ${where}),bounds as(select min(sale_date) lo,max(sale_date) hi from base),ranges as(select ${days?`hi-${days-1}`:'lo'} current_start,hi current_end,${days?`hi-${days*2-1}`:'NULL::DATE'} previous_start,${days?`hi-${days}`:'NULL::DATE'} previous_end from bounds)`
+ const range=`with bounds as(select min(sale_date) lo,max(sale_date) hi from read_parquet('sales.parquet')),ranges as(select ${days?`greatest(lo,hi-${days-1})`:'lo'} current_start,hi current_end,${days?`hi-${days*2-1}`:'NULL::DATE'} previous_start,${days?`hi-${days}`:'NULL::DATE'} previous_end,${days?`lo<=hi-${days*2-1}`:'false'} comparison_available from bounds),base as(select * from read_parquet('sales.parquet') ${where})`
  const riskClauses=[filters.channel&&`division=${literal(filters.channel)}`,filters.device&&`store=${literal(filters.device)}`,...drillPath.filter(item=>item.dimension!=='channel').map(item=>`${item.dimension}=${literal(item.value)}`)].filter(Boolean)
  const riskWhere=riskClauses.length?`where ${riskClauses.join(' and ')}`:''
 
@@ -46,6 +46,9 @@ async function runQuery(filters:FilterState,pageId:string,drillPath:DrillItem[])
   const risk=riskTable.get(0) as Record<string,unknown>
   return{sales,units:Number(row.units??0),tx:Number(row.tx??0),margin:sales?(sales-cogs)/sales:0,rows:Number(row.rows??0),stores:Number(row.stores??0),sku:Number(row.sku??0),coverage:Number(row.coverage_days??0),risk:Number(risk.risk??0),stock:Number(risk.stock??0),target:Number(risk.target??0),reorder:Number(risk.reorder??0),avg_daily:Number(risk.avg_daily??0)}
  }
+ const boundsTable=await con.query(`${range} select strftime(current_start,'%Y-%m-%d') current_start,strftime(current_end,'%Y-%m-%d') current_end,comparison_available from ranges`)
+ const boundsRow=boundsTable.get(0) as Record<string,unknown>
+ const comparisonAvailable=Boolean(boundsRow.comparison_available)
  const current=await metrics('current')
  const previous=await metrics('previous')
  const signal:MartResult['context']['signal']=pageId==='command'||pageId==='explorer'?'sales':pageId==='trust'?'rows':'units'
@@ -71,9 +74,9 @@ async function runQuery(filters:FilterState,pageId:string,drillPath:DrillItem[])
  }else{
   detailTable=await con.query(`select store,product_id,product_name,division,on_hand,target_stock,reorder_qty,risk_status,round(avg_daily_28,1)::double avg_daily_demand,round(avg_daily_prev,1)::double prior_daily_demand from read_parquet('risk.parquet') ${riskWhere} order by reorder_qty desc limit 30`)
  }
- const breakdown=records(breakdownTable).map(row=>({name:String(row.driver_name??'Unknown'),value:Number(row.driver_value??0),previous:filters.period==='all'?undefined:Number(row.previous_value??0)}))
+ const breakdown=records(breakdownTable).map(row=>({name:String(row.driver_name??'Unknown'),value:Number(row.driver_value??0),previous:comparisonAvailable?Number(row.previous_value??0):undefined}))
  const detail=records(detailTable)
  const avgDaily=detail.reduce((sum,row)=>sum+Number(row.avg_daily_demand??row.daily_units??0),0)
  const stock=detail.reduce((sum,row)=>sum+Number(row.on_hand??0),0)
- return{current,previous,trend:trendTable.toArray().map(row=>({label:String(row.period_label),value:Number(row.metric_value)})),breakdown,detail,context:{topDriver:breakdown[0]?.name??'N/A',topShare:denominator?breakdown[0].value/denominator:0,avgDaily,stock,dimension,canDrill:drillPath.length<hierarchy.length-1,signal}}
+ return{current,previous,trend:trendTable.toArray().map(row=>({label:String(row.period_label),value:Number(row.metric_value)})),breakdown,detail,context:{topDriver:breakdown[0]?.name??'N/A',topShare:denominator?breakdown[0].value/denominator:0,avgDaily,stock,dimension,canDrill:drillPath.length<hierarchy.length-1,signal,comparisonAvailable,currentStart:String(boundsRow.current_start??''),currentEnd:String(boundsRow.current_end??'')}}
 }

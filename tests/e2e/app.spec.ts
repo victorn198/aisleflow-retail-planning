@@ -26,3 +26,12 @@ test('operations lab exposes five distinct inventory lenses',async({page})=>{
 test('every secondary page exposes five page-specific and distinct lenses',async({page})=>{
   test.setTimeout(180000);await page.setViewportSize({width:390,height:844});await page.goto('/');await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000});const pages=page.locator('header nav button');for(let i=1;i<await pages.count();i+=1){await pages.nth(i).click();await page.locator('.decision-strip:not(.is-loading)').waitFor({timeout:90000});await expect(page.locator('.query-error')).toHaveCount(0);const lab=page.locator('.ops-lab'),tabs=lab.getByRole('tab');await expect(tabs).toHaveCount(5);const states=new Set<string>();for(let j=0;j<5;j+=1){await tabs.nth(j).click();states.add(await lab.locator('.ops-lab-body').innerText())}expect(states.size).toBe(5);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)}
 })
+
+test('does not present static KPIs when the sales mart cannot load',async({page})=>{
+  test.setTimeout(120000)
+  await page.route('**/data/mart_sales_daily.parquet',route=>route.abort())
+  await page.goto('/')
+  await expect(page.locator('.query-error')).toBeVisible({timeout:90000})
+  await expect(page.locator('.metric-card')).toHaveCount(0)
+  await expect(page.locator('.ops-lab')).toHaveCount(0)
+})

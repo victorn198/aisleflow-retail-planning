@@ -11,4 +11,4 @@ def test_dashboard_contract():
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data["meta"]["rows"] > 0
     assert {page["id"] for page in data["pages"]} == {"command", "forecast", "risk", "explorer", "replenishment", "trust"}
-    assert all(metric["previous"] is not None for page in data["pages"] for metric in page["metrics"])
+    assert all(metric["previous"] is None or isinstance(metric["previous"], (int, float)) for page in data["pages"] for metric in page["metrics"])

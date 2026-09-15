@@ -14,7 +14,7 @@ Stock counts alone do not reveal where working capital or service level is at ri
 
 - Source: [Retail Transactions and Stocks Data](https://data.mendeley.com/datasets/27x8mjm8k4/1), DOI `10.17632/27x8mjm8k4.1`.
 - License: CC BY 4.0; contributor Jimmy Smith.
-- 410,506 sales and inventory records, 40 stores, 2,326 SKUs, and a four-level product hierarchy.
+- 123,928 rows in the published daily sales mart and 50,447 store-product inventory-risk rows, covering 40 stores and 2,326 products.
 - Raw files stay outside Git; the demo contains only compact derived marts.
 
 ## Decision experience
@@ -66,7 +66,7 @@ Validate with `python -m pipeline validate`, `pytest`, `npm test`, `npm run buil
 
 Production implementation would connect ERP sales, inventory snapshots, supplier lead times, service levels, and purchasing constraints. [Discuss a similar project](mailto:victorn198@outlook.com).
 
-See [Portuguese documentation](README.pt-BR.md), [complete dashboard guide](docs/DASHBOARD_GUIDE.md), [metric catalog](docs/METRIC_CATALOG.md), and [demo guide](docs/DEMO_GUIDE.md).
+See [Portuguese documentation](README.pt-BR.md), [analytical readout](docs/ANALYSIS_READOUT.md), [data audit](docs/DATA_AUDIT.md), [complete dashboard guide](docs/DASHBOARD_GUIDE.md), [metric catalog](docs/METRIC_CATALOG.md), and [demo guide](docs/DEMO_GUIDE.md).
 ## Design innovation
 
 The **Replenishment Simulator** converts filtered demand and stock signals into an editable scenario. Lead time, safety-stock days, and demand variation change the recommendation immediately; the result is explicitly a planning scenario, not an automated purchase order.

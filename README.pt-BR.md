@@ -19,7 +19,7 @@ Quantidade em estoque não mostra sozinha onde capital de giro ou nível de serv
 ## Dados e arquitetura
 
 - Fonte real: [Retail Transactions and Stocks Data](https://data.mendeley.com/datasets/27x8mjm8k4/1), CC BY 4.0.
-- 410.506 registros de vendas e estoque.
+- 123.928 linhas no mart diário de vendas e 50.447 posições loja-produto no mart de risco, cobrindo 40 lojas e 2.326 produtos.
 - Pipeline: `CSV → Python/DuckDB → dbt → validação temporal → Parquet/JSON → React/ECharts`.
 - Dados brutos não entram no Git.
 
@@ -51,6 +51,8 @@ npm run dev
 ```
 
 O case demonstra modelagem de granularidades, baseline de previsão, priorização operacional, interface bilíngue e governança de premissas. [Contato](mailto:victorn198@outlook.com).
+
+Consulte também a [leitura analítica em português](docs/ANALYSIS_READOUT.pt-BR.md) e a [auditoria reproduzível dos dados](docs/DATA_AUDIT.md). O case está validado para demonstração de portfólio; uso operacional permanece condicionado à classificação de devoluções/ajustes e à reconciliação dos valores negativos de demanda e estoque.
 ## Inovação de design
 
 O **Simulador de Reposição** transforma demanda e estoque filtrados em um cenário editável. Prazo de entrega, dias de segurança e variação da demanda alteram a recomendação imediatamente; o resultado é explicitamente um cenário de planejamento, não uma ordem de compra automática.
