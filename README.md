@@ -4,6 +4,13 @@ A retail operations case for demand forecasting, inventory risk, and replenishme
 
 **[Open the live demo](https://aisleflow-retail-planning.pages.dev/)** · [Leia em português](README.pt-BR.md)
 
+## Documentation
+
+- [Analysis readout](docs/ANALYSIS_READOUT.md)
+- [Data audit](docs/DATA_AUDIT.md)
+- [Dashboard guide](docs/DASHBOARD_GUIDE.md)
+- [Quality review](docs/DASHBOARD_QUALITY_REVIEW.md)
+
 ![AisleFlow Operations Command](docs/images/en/operations-command.png)
 
 ## Business problem

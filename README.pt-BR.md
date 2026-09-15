@@ -7,6 +7,9 @@
 - [Guia completo do dashboard](docs/DASHBOARD_GUIDE.pt-BR.md)
 - [Catálogo de métricas](docs/METRIC_CATALOG.md)
 - [Roteiro de demonstração](docs/DEMO_GUIDE.md)
+- [Leitura analítica](docs/ANALYSIS_READOUT.pt-BR.md)
+- [Auditoria dos dados](docs/DATA_AUDIT.md)
+- [Revisão de qualidade](docs/DASHBOARD_QUALITY_REVIEW.md)
 
 ![Comando operacional do AisleFlow](docs/images/pt/overview.png)
 
