@@ -44,3 +44,9 @@ def test_negative_value_semantics_are_visible_not_silently_discarded():
     audit = (ROOT / "docs/DATA_AUDIT.md").read_text(encoding="utf-8")
     assert negative_sales > 0 and negative_demand > 0
     assert "negative" in audit.lower()
+
+
+def test_data_trust_labels_negative_sales_as_a_semantic_review():
+    query_code = (ROOT / "src/queryMart.ts").read_text(encoding="utf-8")
+    assert "Return or adjustment semantics" in query_code
+    assert "sales_amount<0 or units<0 or transactions<0 or cogs<0" in query_code
