@@ -14,7 +14,7 @@
 ## Visual and analytical rules
 
 - KPI cards report period outcomes; exception charts and tables identify where action is needed.
-- Filled marks show the current period and outlined marks show the comparable prior period.
+- Bars show the current period and compact reference markers show the comparable prior period.
 - Favorable and unfavorable movement uses semantic color, including margin and inventory risk.
 - The five-lens lab separates priority, coverage, drivers, variability and scenario analysis.
 - Reorder quantities are scenarios because supplier lead time and service-level targets are absent.

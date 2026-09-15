@@ -19,6 +19,7 @@ export default function App() {
   useEffect(() => { fetch('./data/dashboard.json').then(r => r.json()).then(setData) }, [])
   useEffect(()=>{fetch('./data/forecast_evaluation.json').then(r=>r.json()).then(setForecast).catch(()=>setForecast(undefined))},[])
   useEffect(() => { localStorage.setItem('aisleflow-lang', lang); document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en' }, [lang])
+  useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }) }, [pageId])
   useEffect(()=>{let active=true;setMart(null);setQueryState('loading');queryMart(filters,pageId,drillPath).then(result=>{if(active){setMart(result);setQueryState('ready')}}).catch(error=>{console.error(error);if(active)setQueryState('error')});return()=>{active=false}},[filters.channel,filters.device,filters.country,filters.period,pageId,drillPath])
   if (!data) return <main className="loading"><Activity className="spin" /> Loading AisleFlow...</main>
   const page = data.pages.find(p => p.id === pageId) ?? data.pages[0]
